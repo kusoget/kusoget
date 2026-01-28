@@ -39,12 +39,9 @@ export default function LikeButton({ gameId, initialLikeCount, initialIsLiked }:
         return
       }
 
-      // 状態を更新
+      // 状態を更新（楽観的更新）
       setIsLiked(!isLiked)
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-      
-      // ページをリフレッシュして最新の状態を取得
-      router.refresh()
     } catch (err) {
       console.error('Failed to toggle like:', err)
     } finally {

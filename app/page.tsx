@@ -5,6 +5,8 @@ import GameCard from '@/components/GameCard'
 export default async function Home() {
   const supabase = await createClient()
   
+  const { data: { user } } = await supabase.auth.getUser()
+
   const { data: games, error } = await supabase
     .from('games')
     .select(`
@@ -13,7 +15,7 @@ export default async function Home() {
         id,
         username
       ),
-      game_likes(count)
+      game_likes(id)
     `)
     .order('created_at', { ascending: false })
     .limit(20)
@@ -28,8 +30,6 @@ export default async function Home() {
     
     userLikedGames = likes?.map(like => like.game_id) || []
   }
-
-  const { data: { user } } = await supabase.auth.getUser()
   
   let userProfile = null
   if (user) {
@@ -67,7 +67,7 @@ export default async function Home() {
               // いいね数を取得
               const likeCount = Array.isArray(game.game_likes) 
                 ? game.game_likes.length 
-                : (game.game_likes as any)?.count || 0
+                : 0
               const isLiked = userLikedGames.includes(game.id)
 
               return (
