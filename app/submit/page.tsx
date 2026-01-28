@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select } from '@/components/ui/select'
-import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup } from '@/components/ui/radio-group'
 import Link from 'next/link'
 
@@ -37,7 +36,6 @@ const submitSchema = z.object({
   ], {
     required_error: 'ジャンルを選択してください',
   }),
-  platform: z.array(z.enum(['pc', 'mobile'])).min(1, '少なくとも1つのプラットフォームを選択してください'),
   agreeToTerms: z.boolean().refine((val) => val === true, {
     message: '利用規約への同意が必要です',
   }),
@@ -62,13 +60,11 @@ export default function SubmitPage() {
   } = useForm<SubmitForm>({
     resolver: zodResolver(submitSchema),
     defaultValues: {
-      platform: [],
       agreeToTerms: false,
     },
   })
 
   const agreeToTerms = watch('agreeToTerms')
-  const platform = watch('platform')
   const genre = watch('genre')
 
   const genreOptions = [
@@ -88,15 +84,6 @@ export default function SubmitPage() {
     { value: 'fighting', label: '格闘' },
     { value: 'other', label: 'その他' },
   ]
-
-  const handlePlatformChange = (platformValue: 'pc' | 'mobile', checked: boolean) => {
-    const currentPlatforms = platform || []
-    if (checked) {
-      setValue('platform', [...currentPlatforms, platformValue])
-    } else {
-      setValue('platform', currentPlatforms.filter((p) => p !== platformValue))
-    }
-  }
 
   const onSubmit = async (data: SubmitForm) => {
     setError(null)
@@ -163,7 +150,7 @@ export default function SubmitPage() {
           author_id: profile.id,
           type: 'playable', // デフォルト値として'playable'を設定
           genre: data.genre,
-          platform: data.platform,
+          platform: [], // プラットフォームは空配列を設定
         })
 
         if (insertError) {
@@ -252,35 +239,6 @@ export default function SubmitPage() {
                 />
                 {errors.genre && (
                   <p className="text-sm text-destructive">{errors.genre.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label>プラットフォーム *</Label>
-                <div className="flex gap-4">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="platform-pc"
-                      checked={platform?.includes('pc')}
-                      onCheckedChange={(checked) => handlePlatformChange('pc', checked === true)}
-                    />
-                    <Label htmlFor="platform-pc" className="font-normal cursor-pointer">
-                      PC
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="platform-mobile"
-                      checked={platform?.includes('mobile')}
-                      onCheckedChange={(checked) => handlePlatformChange('mobile', checked === true)}
-                    />
-                    <Label htmlFor="platform-mobile" className="font-normal cursor-pointer">
-                      モバイル
-                    </Label>
-                  </div>
-                </div>
-                {errors.platform && (
-                  <p className="text-sm text-destructive">{errors.platform.message}</p>
                 )}
               </div>
 
