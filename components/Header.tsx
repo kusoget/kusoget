@@ -18,7 +18,7 @@ export default async function Header() {
             {user ? (
               <>
                 <Link href="/submit">
-                  <Button variant="outline">投稿する</Button>
+                  <Button>クソゲーを登録</Button>
                 </Link>
                 <UserMenu />
               </>
