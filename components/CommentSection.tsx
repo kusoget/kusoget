@@ -122,10 +122,12 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
         }
       }
 
+      // user_idを明示的に設定
       const { data, error } = await supabase
         .from('game_comments')
         .insert({
           game_id: gameId,
+          user_id: currentUser.id,
           content: newComment.trim(),
         })
         .select()
