@@ -149,8 +149,11 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
   }
 
   const canDelete = (comment: Comment) => {
-    if (!user || !userProfile) return false
-    return user.id === comment.user_id || userProfile.is_admin === true
+    if (!user) return false
+    // 自分のコメントまたは管理者の場合に削除可能
+    if (user.id === comment.user_id) return true
+    if (userProfile && userProfile.is_admin === true) return true
+    return false
   }
 
   return (
