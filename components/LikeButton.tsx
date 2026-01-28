@@ -30,20 +30,32 @@ export default function LikeButton({ gameId, initialLikeCount, initialIsLiked }:
     setLoading(true)
 
     try {
-      const { error } = await supabase.rpc('toggle_game_like', {
+      const { data, error } = await supabase.rpc('toggle_game_like', {
         p_game_id: gameId,
       })
 
       if (error) {
         console.error('Like error:', error)
+        alert(`いいねに失敗しました: ${error.message}`)
         return
       }
 
-      // 状態を更新（楽観的更新）
-      setIsLiked(!isLiked)
-      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
+      // RPC関数の戻り値から最新の状態を取得
+      if (data && data.length > 0) {
+        const result = data[0]
+        setIsLiked(result.liked)
+        setLikeCount(Number(result.like_count))
+      } else {
+        // フォールバック: 楽観的更新
+        setIsLiked(!isLiked)
+        setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
+      }
+      
+      // ページをリフレッシュして最新の状態を取得
+      router.refresh()
     } catch (err) {
       console.error('Failed to toggle like:', err)
+      alert(`いいねに失敗しました: ${err instanceof Error ? err.message : '不明なエラー'}`)
     } finally {
       setLoading(false)
     }

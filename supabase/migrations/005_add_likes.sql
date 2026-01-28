@@ -44,6 +44,11 @@ BEGIN
     RAISE EXCEPTION '認証が必要です';
   END IF;
 
+  -- Check if game exists
+  IF NOT EXISTS (SELECT 1 FROM public.games WHERE id = p_game_id) THEN
+    RAISE EXCEPTION 'ゲームが見つかりません';
+  END IF;
+
   -- Check if like already exists
   SELECT EXISTS (
     SELECT 1 FROM public.game_likes 
@@ -57,7 +62,8 @@ BEGIN
   ELSE
     -- Like: insert new like
     INSERT INTO public.game_likes (game_id, user_id)
-    VALUES (p_game_id, v_user_id);
+    VALUES (p_game_id, v_user_id)
+    ON CONFLICT (game_id, user_id) DO NOTHING;
   END IF;
 
   -- Return updated state
@@ -67,7 +73,7 @@ BEGIN
       SELECT 1 FROM public.game_likes 
       WHERE game_id = p_game_id AND user_id = v_user_id
     ) AS liked,
-    (SELECT COUNT(*) FROM public.game_likes WHERE game_id = p_game_id) AS like_count;
+    (SELECT COUNT(*)::BIGINT FROM public.game_likes WHERE game_id = p_game_id) AS like_count;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
