@@ -70,7 +70,9 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
         )}
       </div>
       <CardHeader>
-        <CardTitle className="line-clamp-2">{game.title}</CardTitle>
+        <Link href={`/games/${game.id}`}>
+          <CardTitle className="line-clamp-2 hover:text-primary cursor-pointer">{game.title}</CardTitle>
+        </Link>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-4">
