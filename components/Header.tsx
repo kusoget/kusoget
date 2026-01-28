@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import UserMenu from '@/components/UserMenu'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default async function Header() {
   const supabase = await createClient()
@@ -40,6 +41,7 @@ export default async function Header() {
                   <Button>クソゲーを登録する</Button>
                 </Link>
                 {/* スマホのみ表示 */}
+                <ThemeToggle />
                 <Link href="/auth/signin" className="md:hidden">
                   <Button variant="ghost" size="sm">ログイン</Button>
                 </Link>
