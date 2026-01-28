@@ -73,12 +73,20 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
 
       if (error) {
         console.error('Error loading comments:', error)
+        // テーブルが存在しない場合のエラーを無視
+        if (error.code === '42P01' || error.message?.includes('does not exist')) {
+          console.log('game_comments table does not exist yet')
+          setComments([])
+          return
+        }
         return
       }
 
       setComments(data || [])
     } catch (err) {
       console.error('Failed to load comments:', err)
+      // テーブルが存在しない場合は空配列を設定
+      setComments([])
     } finally {
       setLoading(false)
     }
@@ -101,6 +109,19 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
     setSubmitting(true)
 
     try {
+      // テーブルが存在するか確認
+      const { error: checkError } = await supabase
+        .from('game_comments')
+        .select('id')
+        .limit(1)
+
+      if (checkError) {
+        if (checkError.code === '42P01' || checkError.message?.includes('does not exist')) {
+          alert('コメント機能を使用するには、Supabaseでマイグレーション（006_add_comments.sql）を実行してください。')
+          return
+        }
+      }
+
       const { data, error } = await supabase
         .from('game_comments')
         .insert({
@@ -113,6 +134,19 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
       if (error) {
         console.error('Error posting comment:', error)
         console.error('Error details:', JSON.stringify(error, null, 2))
+        
+        // テーブルが存在しない場合
+        if (error.code === '42P01' || error.message?.includes('does not exist')) {
+          alert('コメント機能を使用するには、Supabaseでマイグレーション（006_add_comments.sql）を実行してください。')
+          return
+        }
+        
+        // RLSポリシーのエラー
+        if (error.code === '42501' || error.message?.includes('permission denied')) {
+          alert('コメントの投稿権限がありません。ログインしているか確認してください。')
+          return
+        }
+        
         const errorMessage = error.message || error.details || '不明なエラー'
         const errorHint = error.hint ? `\n\nヒント: ${error.hint}` : ''
         alert(`コメントの投稿に失敗しました: ${errorMessage}${errorHint}\n\nエラーコード: ${error.code || 'N/A'}`)
@@ -131,7 +165,12 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
       console.error('Failed to post comment:', err)
       const errorMessage = err instanceof Error ? err.message : '不明なエラー'
       console.error('Exception details:', err)
-      alert(`コメントの投稿に失敗しました: ${errorMessage}\n\nブラウザのコンソールを確認してください。`)
+      
+      if (errorMessage.includes('does not exist') || errorMessage.includes('42P01')) {
+        alert('コメント機能を使用するには、Supabaseでマイグレーション（006_add_comments.sql）を実行してください。')
+      } else {
+        alert(`コメントの投稿に失敗しました: ${errorMessage}\n\nブラウザのコンソールを確認してください。`)
+      }
     } finally {
       setSubmitting(false)
     }
