@@ -43,7 +43,13 @@ export default function Footer() {
             <div className="text-sm text-muted-foreground">
               © 2026 KUSOGET. All rights reserved.
             </div>
-            <nav className="flex gap-6">
+            <nav className="flex flex-wrap justify-center gap-4 md:gap-6">
+              <Link 
+                href="/about" 
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                KUSOGETとは？
+              </Link>
               <Link 
                 href="/terms" 
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
