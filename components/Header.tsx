@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import UserMenu from '@/components/UserMenu'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import Logo from '@/components/Logo'
 
 export default async function Header() {
   const supabase = await createClient()
@@ -12,12 +13,8 @@ export default async function Header() {
     <header className="border-b bg-background sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity text-foreground">
-            <img
-              src="/img/logo.svg"
-              alt="KUSOGET"
-              className="h-10 md:h-12 w-auto"
-            />
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Logo />
           </Link>
           <nav className="flex items-center gap-2 md:gap-4">
             {user ? (
