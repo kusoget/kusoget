@@ -16,9 +16,9 @@ export default async function Header() {
             <Image
               src="/img/logo.svg"
               alt="KUSOGET"
-              width={120}
-              height={40}
-              className="h-8 w-auto"
+              width={180}
+              height={60}
+              className="h-12 w-auto"
             />
           </Link>
           <nav className="flex items-center gap-4">
