@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import DeleteButton from '@/components/DeleteButton'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { getGenreLabel } from '@/lib/genre-labels'
 
 interface GameCardProps {
   game: {
@@ -68,11 +69,7 @@ export default function GameCard({ game, canDelete }: GameCardProps) {
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-4">
           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
-            {game.genre === 'action' ? 'アクション' :
-             game.genre === 'rpg' ? 'RPG' :
-             game.genre === 'puzzle' ? 'パズル' :
-             game.genre === 'simulation' ? 'シミュレーション' :
-             game.genre === 'joke' ? 'ジョーク' : 'その他'}
+            {getGenreLabel(game.genre)}
           </span>
           {game.platform?.map((p) => (
             <span key={p} className="text-xs px-2 py-1 bg-secondary rounded-md">

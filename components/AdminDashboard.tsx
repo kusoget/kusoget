@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Trash2, Search, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import DeleteButton from '@/components/DeleteButton'
+import { getGenreLabel } from '@/lib/genre-labels'
 
 interface Game {
   id: string

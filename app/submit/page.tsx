@@ -12,12 +12,29 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
+import { RadioGroup } from '@/components/ui/radio-group'
 import Link from 'next/link'
 
 const submitSchema = z.object({
   title: z.string().min(1, 'タイトルを入力してください'),
   game_url: z.string().url('有効なURLを入力してください'),
-  genre: z.enum(['action', 'rpg', 'puzzle', 'simulation', 'joke', 'other'], {
+  genre: z.enum([
+    'action', 
+    'rpg', 
+    'puzzle', 
+    'simulation', 
+    'joke', 
+    'platformer',
+    'shooter',
+    'racing',
+    'strategy',
+    'horror',
+    'adventure',
+    'music',
+    'sports',
+    'fighting',
+    'other'
+  ], {
     required_error: 'ジャンルを選択してください',
   }),
   platform: z.array(z.enum(['pc', 'mobile'])).min(1, '少なくとも1つのプラットフォームを選択してください'),
@@ -52,6 +69,25 @@ export default function SubmitPage() {
 
   const agreeToTerms = watch('agreeToTerms')
   const platform = watch('platform')
+  const genre = watch('genre')
+
+  const genreOptions = [
+    { value: 'action', label: 'アクション' },
+    { value: 'rpg', label: 'RPG' },
+    { value: 'puzzle', label: 'パズル' },
+    { value: 'simulation', label: 'シミュレーション' },
+    { value: 'joke', label: 'ジョーク' },
+    { value: 'platformer', label: 'プラットフォーマー' },
+    { value: 'shooter', label: 'シューティング' },
+    { value: 'racing', label: 'レーシング' },
+    { value: 'strategy', label: 'ストラテジー' },
+    { value: 'horror', label: 'ホラー' },
+    { value: 'adventure', label: 'アドベンチャー' },
+    { value: 'music', label: '音楽' },
+    { value: 'sports', label: 'スポーツ' },
+    { value: 'fighting', label: '格闘' },
+    { value: 'other', label: 'その他' },
+  ]
 
   const handlePlatformChange = (platformValue: 'pc' | 'mobile', checked: boolean) => {
     const currentPlatforms = platform || []
@@ -207,16 +243,13 @@ export default function SubmitPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="genre">ジャンル *</Label>
-                <Select id="genre" {...register('genre')}>
-                  <option value="">選択してください</option>
-                  <option value="action">アクション</option>
-                  <option value="rpg">RPG</option>
-                  <option value="puzzle">パズル</option>
-                  <option value="simulation">シミュレーション</option>
-                  <option value="joke">ジョーク</option>
-                  <option value="other">その他</option>
-                </Select>
+                <Label>ジャンル *</Label>
+                <RadioGroup
+                  name="genre"
+                  options={genreOptions}
+                  value={genre}
+                  onValueChange={(value) => setValue('genre', value as any)}
+                />
                 {errors.genre && (
                   <p className="text-sm text-destructive">{errors.genre.message}</p>
                 )}
