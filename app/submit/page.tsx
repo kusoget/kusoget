@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select } from '@/components/ui/select'
 import { RadioGroup } from '@/components/ui/radio-group'
+import { Checkbox } from '@/components/ui/checkbox'
 import Link from 'next/link'
 
 const submitSchema = z.object({
