@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import { useTheme } from 'next-themes'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,6 +28,7 @@ interface ProfileFormProps {
 
 export default function ProfileForm({ initialUsername, email, initialThemePreference }: ProfileFormProps) {
   const router = useRouter()
+  const { setTheme } = useTheme()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -166,21 +168,10 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
       }
 
       setThemePreference(newTheme)
-      setThemeSuccess('テーマ設定を更新しました。ページをリロードしてください。')
+      setThemeSuccess('テーマ設定を更新しました。')
       
-      // テーマを即座に反映
-      if (typeof window !== 'undefined') {
-        const root = window.document.documentElement
-        if (newTheme === 'system') {
-          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-          root.classList.remove('light', 'dark')
-          root.classList.add(systemTheme)
-        } else {
-          root.classList.remove('light', 'dark')
-          root.classList.add(newTheme)
-        }
-        localStorage.setItem('theme', newTheme)
-      }
+      // next-themesを使ってテーマを即座に反映
+      setTheme(newTheme)
     } catch (err) {
       setThemeError('テーマ設定の更新に失敗しました')
       console.error(err)
