@@ -17,7 +17,6 @@ import Link from 'next/link'
 const submitSchema = z.object({
   title: z.string().min(1, 'タイトルを入力してください'),
   game_url: z.string().url('有効なURLを入力してください'),
-  description: z.string().min(1, '説明を入力してください'),
   genre: z.enum(['action', 'rpg', 'puzzle', 'simulation', 'joke', 'other'], {
     required_error: 'ジャンルを選択してください',
   }),
@@ -122,7 +121,7 @@ export default function SubmitPage() {
         .from('games')
         .insert({
           title: data.title,
-          description: data.description,
+          description: '', // 説明は空文字列を設定
           game_url: data.game_url,
           thumbnail_url: thumbnailUrl,
           author_id: profile.id,
@@ -183,19 +182,6 @@ export default function SubmitPage() {
                 />
                 {errors.game_url && (
                   <p className="text-sm text-destructive">{errors.game_url.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description">説明 *</Label>
-                <textarea
-                  id="description"
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="ゲームの説明を入力してください"
-                  {...register('description')}
-                />
-                {errors.description && (
-                  <p className="text-sm text-destructive">{errors.description.message}</p>
                 )}
               </div>
 

@@ -169,12 +169,9 @@ export default function AdminDashboard() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-lg mb-1 truncate">
+                        <h3 className="font-semibold text-lg mb-2 truncate">
                           {game.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                          {game.description}
-                        </p>
                         <div className="flex flex-wrap gap-2 mb-2">
                           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
                             {game.genre}

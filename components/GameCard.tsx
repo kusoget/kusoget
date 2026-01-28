@@ -64,9 +64,6 @@ export default function GameCard({ game, canDelete }: GameCardProps) {
       </div>
       <CardHeader>
         <CardTitle className="line-clamp-2">{game.title}</CardTitle>
-        <CardDescription className="line-clamp-2">
-          {game.description}
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-4">
