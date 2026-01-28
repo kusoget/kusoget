@@ -9,6 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "KUSOGET - クソゲー投稿型ポータルサイト",
   description: "AIで作られたクソゲーや開発ログを共有する投稿型ポータルサイト",
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
