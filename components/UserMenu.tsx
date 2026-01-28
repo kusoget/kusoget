@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { User, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
@@ -20,6 +21,15 @@ export default function UserMenu() {
 
   return (
     <div className="flex items-center gap-2">
+      <Link href="/profile">
+        <Button
+          variant="ghost"
+          size="icon"
+          title="マイページ"
+        >
+          <User className="h-5 w-5" />
+        </Button>
+      </Link>
       <Button
         variant="ghost"
         size="icon"
