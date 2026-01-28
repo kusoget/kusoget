@@ -46,10 +46,10 @@ export default async function Home() {
         {games && games.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {games.map((game) => {
-              const canDelete = userProfile && (
+              const canDelete = Boolean(userProfile && (
                 userProfile.id === game.author_id || 
                 userProfile.is_admin === true
-              )
+              ))
 
               return (
                 <GameCard 
