@@ -7,6 +7,7 @@ export default async function Home() {
   
   const { data: { user } } = await supabase.auth.getUser()
 
+  // まずゲームを取得（game_likesテーブルが存在しない場合でも動作するように）
   const { data: games, error } = await supabase
     .from('games')
     .select(`
@@ -14,21 +15,41 @@ export default async function Home() {
       profiles:author_id (
         id,
         username
-      ),
-      game_likes(id)
+      )
     `)
     .order('created_at', { ascending: false })
     .limit(20)
 
-  // ユーザーがいいねしたゲームを取得
+  // いいね情報を取得（テーブルが存在する場合のみ）
+  let gameLikesMap: Record<string, number> = {}
   let userLikedGames: string[] = []
-  if (user) {
-    const { data: likes } = await supabase
-      .from('game_likes')
-      .select('game_id')
-      .eq('user_id', user.id)
-    
-    userLikedGames = likes?.map(like => like.game_id) || []
+  
+  try {
+    // 各ゲームのいいね数を取得
+    if (games && games.length > 0) {
+      const gameIds = games.map(g => g.id)
+      const { data: likes } = await supabase
+        .from('game_likes')
+        .select('game_id, user_id')
+        .in('game_id', gameIds)
+      
+      if (likes) {
+        // いいね数をカウント
+        likes.forEach(like => {
+          gameLikesMap[like.game_id] = (gameLikesMap[like.game_id] || 0) + 1
+        })
+        
+        // ユーザーがいいねしたゲームを取得
+        if (user) {
+          userLikedGames = likes
+            .filter(like => like.user_id === user.id)
+            .map(like => like.game_id)
+        }
+      }
+    }
+  } catch (err) {
+    // game_likesテーブルが存在しない場合は無視
+    console.log('game_likes table may not exist yet:', err)
   }
   
   let userProfile = null
@@ -65,9 +86,7 @@ export default async function Home() {
               const canEdit = Boolean(userProfile && userProfile.id === game.author_id)
 
               // いいね数を取得
-              const likeCount = Array.isArray(game.game_likes) 
-                ? game.game_likes.length 
-                : 0
+              const likeCount = gameLikesMap[game.id] || 0
               const isLiked = userLikedGames.includes(game.id)
 
               return (
