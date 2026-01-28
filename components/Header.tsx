@@ -28,7 +28,7 @@ export default async function Header() {
                   <Button variant="ghost">ログイン</Button>
                 </Link>
                 <Link href="/auth/signup">
-                  <Button>サインアップ</Button>
+                  <Button>クソゲーを登録する</Button>
                 </Link>
               </>
             )}
