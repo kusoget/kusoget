@@ -8,9 +8,10 @@ import { createClient } from '@/lib/supabase/client'
 
 interface DeleteButtonProps {
   gameId: string
+  onDelete?: () => void
 }
 
-export default function DeleteButton({ gameId }: DeleteButtonProps) {
+export default function DeleteButton({ gameId, onDelete }: DeleteButtonProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
@@ -34,7 +35,12 @@ export default function DeleteButton({ gameId }: DeleteButtonProps) {
         return
       }
 
-      router.refresh()
+      // コールバックが指定されている場合は実行
+      if (onDelete) {
+        onDelete()
+      } else {
+        router.refresh()
+      }
     } catch (err) {
       alert('削除に失敗しました。しばらく待ってから再度お試しください。')
       console.error('Delete error:', err)
