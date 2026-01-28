@@ -175,7 +175,7 @@ export default function AdminDashboard() {
                         </h3>
                         <div className="flex flex-wrap gap-2 mb-2">
                           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
-                            {game.genre}
+                            {getGenreLabel(game.genre)}
                           </span>
                           {game.platform?.map((p) => (
                             <span key={p} className="text-xs px-2 py-1 bg-secondary rounded-md">
