@@ -50,6 +50,7 @@ export default async function Home() {
                 userProfile.id === game.author_id || 
                 userProfile.is_admin === true
               ))
+              const canEdit = Boolean(userProfile && userProfile.id === game.author_id)
 
               return (
                 <GameCard 
@@ -59,6 +60,7 @@ export default async function Home() {
                     profiles: game.profiles as { id: string; username: string | null } | null
                   }}
                   canDelete={canDelete}
+                  canEdit={canEdit}
                 />
               )
             })}

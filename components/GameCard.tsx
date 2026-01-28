@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import DeleteButton from '@/components/DeleteButton'
+import EditButton from '@/components/EditButton'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { getGenreLabel } from '@/lib/genre-labels'
@@ -28,9 +29,10 @@ interface GameCardProps {
     } | null
   }
   canDelete: boolean
+  canEdit: boolean
 }
 
-export default function GameCard({ game, canDelete }: GameCardProps) {
+export default function GameCard({ game, canDelete, canEdit }: GameCardProps) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -57,9 +59,10 @@ export default function GameCard({ game, canDelete }: GameCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         )}
-        {canDelete && (
-          <div className="absolute top-2 right-2">
-            <DeleteButton gameId={game.id} />
+        {(canDelete || canEdit) && (
+          <div className="absolute top-2 right-2 flex gap-2">
+            {canEdit && <EditButton gameId={game.id} />}
+            {canDelete && <DeleteButton gameId={game.id} />}
           </div>
         )}
       </div>
