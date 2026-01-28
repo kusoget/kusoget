@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 export default function Logo() {
-  const { theme, resolvedTheme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -12,7 +12,8 @@ export default function Logo() {
   }, [])
 
   // マウント前はライトモード用のロゴを表示（SSR対応）
-  const isDark = mounted && (resolvedTheme === 'dark' || theme === 'dark')
+  // resolvedThemeはシステム設定を解決した後の実際のテーマ（'light'または'dark'）を返す
+  const isDark = mounted && resolvedTheme === 'dark'
   const logoSrc = isDark ? '/img/logo_w.svg' : '/img/logo.svg'
 
   return (
