@@ -101,16 +101,27 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
     setSubmitting(true)
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('game_comments')
         .insert({
           game_id: gameId,
           content: newComment.trim(),
         })
+        .select()
+        .single()
 
       if (error) {
         console.error('Error posting comment:', error)
-        alert(`コメントの投稿に失敗しました: ${error.message}`)
+        console.error('Error details:', JSON.stringify(error, null, 2))
+        const errorMessage = error.message || error.details || '不明なエラー'
+        const errorHint = error.hint ? `\n\nヒント: ${error.hint}` : ''
+        alert(`コメントの投稿に失敗しました: ${errorMessage}${errorHint}\n\nエラーコード: ${error.code || 'N/A'}`)
+        return
+      }
+
+      if (!data) {
+        console.error('No data returned from insert')
+        alert('コメントの投稿に失敗しました: データが返されませんでした')
         return
       }
 
@@ -118,7 +129,9 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
       loadComments()
     } catch (err) {
       console.error('Failed to post comment:', err)
-      alert(`コメントの投稿に失敗しました: ${err instanceof Error ? err.message : '不明なエラー'}`)
+      const errorMessage = err instanceof Error ? err.message : '不明なエラー'
+      console.error('Exception details:', err)
+      alert(`コメントの投稿に失敗しました: ${errorMessage}\n\nブラウザのコンソールを確認してください。`)
     } finally {
       setSubmitting(false)
     }
