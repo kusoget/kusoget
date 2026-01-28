@@ -13,6 +13,7 @@ export default function Logo() {
 
   // マウント前はライトモード用のロゴを表示（SSR対応）
   // resolvedThemeはシステム設定を解決した後の実際のテーマ（'light'または'dark'）を返す
+  // ライトモードのときは通常のロゴ（logo.svg）、ダークモードのときは白いロゴ（logo_w.svg）
   const isDark = mounted && resolvedTheme === 'dark'
   const logoSrc = isDark ? '/img/logo_w.svg' : '/img/logo.svg'
 
