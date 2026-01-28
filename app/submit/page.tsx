@@ -224,9 +224,18 @@ export default function SubmitPage() {
                   }}
                 />
                 {thumbnailFile && (
-                  <p className="text-sm text-muted-foreground">
-                    選択中: {thumbnailFile.name}
-                  </p>
+                  <div className="mt-2">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      選択中: {thumbnailFile.name}
+                    </p>
+                    <div className="relative w-full h-48 bg-muted rounded-md overflow-hidden">
+                      <img
+                        src={URL.createObjectURL(thumbnailFile)}
+                        alt="プレビュー"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
 
