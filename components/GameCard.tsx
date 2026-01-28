@@ -7,6 +7,7 @@ import { ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import DeleteButton from '@/components/DeleteButton'
 import EditButton from '@/components/EditButton'
+import LikeButton from '@/components/LikeButton'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { getGenreLabel } from '@/lib/genre-labels'
@@ -30,9 +31,11 @@ interface GameCardProps {
   }
   canDelete: boolean
   canEdit: boolean
+  likeCount: number
+  isLiked: boolean
 }
 
-export default function GameCard({ game, canDelete, canEdit }: GameCardProps) {
+export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked }: GameCardProps) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -81,17 +84,25 @@ export default function GameCard({ game, canDelete, canEdit }: GameCardProps) {
           </span>
           <span>{game.view_count} 閲覧</span>
         </div>
-        <Link 
-          href={game.game_url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          onClick={handleGameClick}
-        >
-          <Button className="w-full" variant="outline">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            ゲームをプレイ
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <LikeButton 
+            gameId={game.id}
+            initialLikeCount={likeCount}
+            initialIsLiked={isLiked}
+          />
+          <Link 
+            href={game.game_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={handleGameClick}
+            className="flex-1"
+          >
+            <Button className="w-full" variant="outline">
+              <ExternalLink className="mr-2 h-4 w-4" />
+              ゲームをプレイ
+            </Button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )

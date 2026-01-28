@@ -12,10 +12,22 @@ export default async function Home() {
       profiles:author_id (
         id,
         username
-      )
+      ),
+      game_likes(count)
     `)
     .order('created_at', { ascending: false })
     .limit(20)
+
+  // ユーザーがいいねしたゲームを取得
+  let userLikedGames: string[] = []
+  if (user) {
+    const { data: likes } = await supabase
+      .from('game_likes')
+      .select('game_id')
+      .eq('user_id', user.id)
+    
+    userLikedGames = likes?.map(like => like.game_id) || []
+  }
 
   const { data: { user } } = await supabase.auth.getUser()
   
@@ -52,6 +64,12 @@ export default async function Home() {
               ))
               const canEdit = Boolean(userProfile && userProfile.id === game.author_id)
 
+              // いいね数を取得
+              const likeCount = Array.isArray(game.game_likes) 
+                ? game.game_likes.length 
+                : (game.game_likes as any)?.count || 0
+              const isLiked = userLikedGames.includes(game.id)
+
               return (
                 <GameCard 
                   key={game.id} 
@@ -61,6 +79,8 @@ export default async function Home() {
                   }}
                   canDelete={canDelete}
                   canEdit={canEdit}
+                  likeCount={likeCount}
+                  isLiked={isLiked}
                 />
               )
             })}
