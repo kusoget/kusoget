@@ -82,7 +82,7 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
           <span>
             {game.profiles?.username || '匿名ユーザー'}
           </span>
-          <span>{game.view_count} 閲覧</span>
+          <span>{game.view_count} プレイ</span>
         </div>
         <div className="flex gap-2">
           <LikeButton 
