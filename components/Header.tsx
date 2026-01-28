@@ -19,7 +19,7 @@ export default async function Header() {
               alt="KUSOGET"
               width={180}
               height={60}
-              className="h-10 md:h-12 w-auto dark:invert"
+              className="h-10 md:h-12 w-auto"
             />
           </Link>
           <nav className="flex items-center gap-2 md:gap-4">
