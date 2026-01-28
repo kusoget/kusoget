@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useTransition } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -39,7 +39,7 @@ interface GameCardProps {
 export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked }: GameCardProps) {
   const router = useRouter()
   const supabase = createClient()
-  const [isNavigating, setIsNavigating] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const handleGameClick = async () => {
     try {
@@ -62,8 +62,9 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
     ) {
       return
     }
-    setIsNavigating(true)
-    router.push(`/games/${game.id}`)
+    startTransition(() => {
+      router.push(`/games/${game.id}`)
+    })
   }
 
   return (
@@ -71,7 +72,7 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
       className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
       onClick={handleCardClick}
     >
-      {isNavigating && (
+      {isPending && (
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
