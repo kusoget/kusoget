@@ -2,12 +2,11 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import LikeButton from '@/components/LikeButton'
 import DeleteButton from '@/components/DeleteButton'
 import EditButton from '@/components/EditButton'
+import PlayButton from '@/components/PlayButton'
 import CommentSection from '@/components/CommentSection'
 import { getGenreLabel } from '@/lib/genre-labels'
 
@@ -77,13 +76,6 @@ export default async function GameDetailPage({ params }: GameDetailPageProps) {
     console.log('game_likes table may not exist yet:', err)
   }
 
-  // 閲覧数をインクリメント
-  if (user) {
-    await supabase.rpc('increment_view_count', {
-      game_id: params.id,
-    })
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -132,16 +124,7 @@ export default async function GameDetailPage({ params }: GameDetailPageProps) {
                 initialLikeCount={likeCount}
                 initialIsLiked={isLiked}
               />
-              <Link 
-                href={game.game_url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Button variant="default" size="default">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  ゲームをプレイ
-                </Button>
-              </Link>
+              <PlayButton gameUrl={game.game_url} gameId={game.id} />
             </div>
           </CardContent>
         </Card>
