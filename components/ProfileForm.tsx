@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertTriangle, Trash2, LogOut } from 'lucide-react'
+import { AlertTriangle, Trash2, LogOut, Sun, Moon, Monitor } from 'lucide-react'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 const profileSchema = z.object({
   username: z.string().min(2, 'ユーザー名は2文字以上で入力してください').max(30, 'ユーザー名は30文字以内で入力してください'),
@@ -21,15 +22,18 @@ type ProfileForm = z.infer<typeof profileSchema>
 interface ProfileFormProps {
   initialUsername: string
   email: string
+  initialThemePreference: 'light' | 'dark' | 'system'
 }
 
-export default function ProfileForm({ initialUsername, email }: ProfileFormProps) {
+export default function ProfileForm({ initialUsername, email, initialThemePreference }: ProfileFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [signOutLoading, setSignOutLoading] = useState(false)
+  const [themePreference, setThemePreference] = useState<'light' | 'dark' | 'system'>(initialThemePreference)
+  const [themeLoading, setThemeLoading] = useState(false)
   const supabase = createClient()
 
   const {
@@ -134,6 +138,55 @@ export default function ProfileForm({ initialUsername, email }: ProfileFormProps
     router.refresh()
   }
 
+  const handleThemeChange = async (newTheme: 'light' | 'dark' | 'system') => {
+    setThemeLoading(true)
+    setError(null)
+    setSuccess(null)
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/auth/signin')
+        return
+      }
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          theme_preference: newTheme,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id)
+
+      if (updateError) {
+        setError('テーマ設定の更新に失敗しました: ' + updateError.message)
+        return
+      }
+
+      setThemePreference(newTheme)
+      setSuccess('テーマ設定を更新しました。ページをリロードしてください。')
+      
+      // テーマを即座に反映
+      if (typeof window !== 'undefined') {
+        const root = window.document.documentElement
+        if (newTheme === 'system') {
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          root.classList.remove('light', 'dark')
+          root.classList.add(systemTheme)
+        } else {
+          root.classList.remove('light', 'dark')
+          root.classList.add(newTheme)
+        }
+        localStorage.setItem('theme', newTheme)
+      }
+    } catch (err) {
+      setError('テーマ設定の更新に失敗しました')
+      console.error(err)
+    } finally {
+      setThemeLoading(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* ユーザー情報 */}
@@ -189,6 +242,49 @@ export default function ProfileForm({ initialUsername, email }: ProfileFormProps
               {loading ? '更新中...' : 'ユーザー名を更新'}
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* テーマ設定 */}
+      <Card>
+        <CardHeader>
+          <CardTitle>テーマ設定</CardTitle>
+          <CardDescription>
+            アプリの表示テーマを設定できます
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <RadioGroup
+            value={themePreference}
+            onValueChange={(value) => handleThemeChange(value as 'light' | 'dark' | 'system')}
+            disabled={themeLoading}
+            className="space-y-3"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="light" id="theme-light" />
+              <Label htmlFor="theme-light" className="flex items-center gap-2 cursor-pointer">
+                <Sun className="h-4 w-4" />
+                <span>ライトモード</span>
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="dark" id="theme-dark" />
+              <Label htmlFor="theme-dark" className="flex items-center gap-2 cursor-pointer">
+                <Moon className="h-4 w-4" />
+                <span>ダークモード</span>
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="system" id="theme-system" />
+              <Label htmlFor="theme-system" className="flex items-center gap-2 cursor-pointer">
+                <Monitor className="h-4 w-4" />
+                <span>システム設定に従う</span>
+              </Label>
+            </div>
+          </RadioGroup>
+          {themeLoading && (
+            <p className="text-sm text-muted-foreground mt-4">更新中...</p>
+          )}
         </CardContent>
       </Card>
 

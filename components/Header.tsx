@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import UserMenu from '@/components/UserMenu'
-import { ThemeToggle } from '@/components/ThemeToggle'
 import Logo from '@/components/Logo'
 
 export default async function Header() {
@@ -35,7 +34,6 @@ export default async function Header() {
                   <Button>クソゲーを登録する</Button>
                 </Link>
                 {/* スマホのみ表示 */}
-                <ThemeToggle />
                 <Link href="/auth/signin" className="md:hidden">
                   <Button variant="ghost" size="sm">ログイン</Button>
                 </Link>

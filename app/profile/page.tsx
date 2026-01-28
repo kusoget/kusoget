@@ -12,7 +12,7 @@ export default async function ProfilePage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('username, avatar_url')
+    .select('username, avatar_url, theme_preference')
     .eq('id', user.id)
     .single()
 
@@ -29,6 +29,7 @@ export default async function ProfilePage() {
         <ProfileForm 
           initialUsername={profile?.username || ''}
           email={user.email || ''}
+          initialThemePreference={(profile?.theme_preference as 'light' | 'dark' | 'system') || 'system'}
         />
       </div>
     </div>
