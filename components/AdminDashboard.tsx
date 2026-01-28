@@ -177,9 +177,6 @@ export default function AdminDashboard() {
                         </p>
                         <div className="flex flex-wrap gap-2 mb-2">
                           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
-                            {game.type === 'playable' ? 'プレイ可能' : '開発ログ'}
-                          </span>
-                          <span className="text-xs px-2 py-1 bg-secondary rounded-md">
                             {game.genre}
                           </span>
                           {game.platform?.map((p) => (

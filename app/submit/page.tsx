@@ -18,9 +18,6 @@ const submitSchema = z.object({
   title: z.string().min(1, 'タイトルを入力してください'),
   game_url: z.string().url('有効なURLを入力してください'),
   description: z.string().min(1, '説明を入力してください'),
-  type: z.enum(['playable', 'log'], {
-    required_error: 'タイプを選択してください',
-  }),
   genre: z.enum(['action', 'rpg', 'puzzle', 'simulation', 'joke', 'other'], {
     required_error: 'ジャンルを選択してください',
   }),
@@ -129,7 +126,7 @@ export default function SubmitPage() {
           game_url: data.game_url,
           thumbnail_url: thumbnailUrl,
           author_id: profile.id,
-          type: data.type,
+          type: 'playable', // デフォルト値として'playable'を設定
           genre: data.genre,
           platform: data.platform,
         })
@@ -220,18 +217,6 @@ export default function SubmitPage() {
                   <p className="text-sm text-muted-foreground">
                     選択中: {thumbnailFile.name}
                   </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="type">タイプ *</Label>
-                <Select id="type" {...register('type')}>
-                  <option value="">選択してください</option>
-                  <option value="playable">プレイ可能</option>
-                  <option value="log">開発ログ</option>
-                </Select>
-                {errors.type && (
-                  <p className="text-sm text-destructive">{errors.type.message}</p>
                 )}
               </div>
 

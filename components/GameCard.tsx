@@ -71,9 +71,6 @@ export default function GameCard({ game, canDelete }: GameCardProps) {
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-4">
           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
-            {game.type === 'playable' ? 'プレイ可能' : '開発ログ'}
-          </span>
-          <span className="text-xs px-2 py-1 bg-secondary rounded-md">
             {game.genre === 'action' ? 'アクション' :
              game.genre === 'rpg' ? 'RPG' :
              game.genre === 'puzzle' ? 'パズル' :
