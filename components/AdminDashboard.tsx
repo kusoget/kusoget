@@ -177,11 +177,6 @@ export default function AdminDashboard() {
                           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
                             {getGenreLabel(game.genre)}
                           </span>
-                          {game.platform?.map((p) => (
-                            <span key={p} className="text-xs px-2 py-1 bg-secondary rounded-md">
-                              {p === 'pc' ? 'PC' : 'モバイル'}
-                            </span>
-                          ))}
                         </div>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span>

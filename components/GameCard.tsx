@@ -71,11 +71,6 @@ export default function GameCard({ game, canDelete }: GameCardProps) {
           <span className="text-xs px-2 py-1 bg-secondary rounded-md">
             {getGenreLabel(game.genre)}
           </span>
-          {game.platform?.map((p) => (
-            <span key={p} className="text-xs px-2 py-1 bg-secondary rounded-md">
-              {p === 'pc' ? 'PC' : 'モバイル'}
-            </span>
-          ))}
         </div>
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
           <span>
