@@ -1,9 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import DeleteButton from '@/components/DeleteButton'
 import EditButton from '@/components/EditButton'
@@ -38,6 +39,7 @@ interface GameCardProps {
 export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked }: GameCardProps) {
   const router = useRouter()
   const supabase = createClient()
+  const [isNavigating, setIsNavigating] = useState(false)
 
   const handleGameClick = async () => {
     try {
@@ -60,14 +62,20 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
     ) {
       return
     }
+    setIsNavigating(true)
     router.push(`/games/${game.id}`)
   }
 
   return (
     <Card 
-      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
       onClick={handleCardClick}
     >
+      {isNavigating && (
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      )}
       <div className="relative w-full h-48 bg-muted">
         {game.thumbnail_url && (
           <Image
