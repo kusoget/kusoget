@@ -177,7 +177,7 @@ export default function SubmitPage() {
           <CardHeader>
             <CardTitle>ゲームを投稿</CardTitle>
             <CardDescription>
-              新しいクソゲーや開発ログを共有しましょう
+              新しいクソゲーを共有しましょう
             </CardDescription>
           </CardHeader>
           <CardContent>

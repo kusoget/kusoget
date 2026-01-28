@@ -39,7 +39,7 @@ export default async function Home() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">KUSOGET</h1>
           <p className="text-lg text-muted-foreground">
-            AIで作られたクソゲーや開発ログを共有する投稿型ポータルサイト
+            AIで作られたクソゲーを共有する投稿型ポータルサイト
           </p>
         </div>
 
