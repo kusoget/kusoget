@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertTriangle, Trash2 } from 'lucide-react'
+import { AlertTriangle, Trash2, LogOut } from 'lucide-react'
 
 const profileSchema = z.object({
   username: z.string().min(2, 'ユーザー名は2文字以上で入力してください').max(30, 'ユーザー名は30文字以内で入力してください'),
@@ -29,6 +29,7 @@ export default function ProfileForm({ initialUsername, email }: ProfileFormProps
   const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
+  const [signOutLoading, setSignOutLoading] = useState(false)
   const supabase = createClient()
 
   const {
@@ -126,6 +127,13 @@ export default function ProfileForm({ initialUsername, email }: ProfileFormProps
     }
   }
 
+  const handleSignOut = async () => {
+    setSignOutLoading(true)
+    await supabase.auth.signOut()
+    router.push('/')
+    router.refresh()
+  }
+
   return (
     <div className="space-y-6">
       {/* ユーザー情報 */}
@@ -181,6 +189,26 @@ export default function ProfileForm({ initialUsername, email }: ProfileFormProps
               {loading ? '更新中...' : 'ユーザー名を更新'}
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* ログアウト */}
+      <Card>
+        <CardHeader>
+          <CardTitle>ログアウト</CardTitle>
+          <CardDescription>
+            アカウントからログアウトします
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            variant="outline"
+            onClick={handleSignOut}
+            disabled={signOutLoading}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            {signOutLoading ? 'ログアウト中...' : 'ログアウト'}
+          </Button>
         </CardContent>
       </Card>
 
