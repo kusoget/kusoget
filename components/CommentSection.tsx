@@ -87,7 +87,9 @@ export default function CommentSection({ gameId }: CommentSectionProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!user) {
+    // ログインチェック（念のため二重チェック）
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
+    if (!currentUser) {
       router.push('/auth/signin')
       return
     }

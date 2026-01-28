@@ -50,8 +50,24 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
     }
   }
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // ボタンやリンクをクリックした場合はカードのリンクを無効化
+    const target = e.target as HTMLElement
+    if (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('[role="button"]')
+    ) {
+      return
+    }
+    router.push(`/games/${game.id}`)
+  }
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card 
+      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="relative w-full h-48 bg-muted">
         {game.thumbnail_url && (
           <Image
@@ -63,16 +79,14 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
           />
         )}
         {(canDelete || canEdit) && (
-          <div className="absolute top-2 right-2 flex gap-2">
+          <div className="absolute top-2 right-2 flex gap-2" onClick={(e) => e.stopPropagation()}>
             {canEdit && <EditButton gameId={game.id} />}
             {canDelete && <DeleteButton gameId={game.id} />}
           </div>
         )}
       </div>
       <CardHeader>
-        <Link href={`/games/${game.id}`}>
-          <CardTitle className="line-clamp-2 hover:text-primary cursor-pointer">{game.title}</CardTitle>
-        </Link>
+        <CardTitle className="line-clamp-2 hover:text-primary">{game.title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-4">
@@ -86,7 +100,7 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
           </span>
           <span>{game.view_count} プレイ</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
           <LikeButton 
             gameId={game.id}
             initialLikeCount={likeCount}
