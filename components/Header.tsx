@@ -10,7 +10,7 @@ export default async function Header() {
 
   return (
     <header className="border-b bg-background sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Image
@@ -18,24 +18,30 @@ export default async function Header() {
               alt="KUSOGET"
               width={180}
               height={60}
-              className="h-12 w-auto"
+              className="h-10 md:h-12 w-auto"
             />
           </Link>
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-2 md:gap-4">
             {user ? (
               <>
-                <Link href="/submit">
+                {/* デスクトップのみ表示 */}
+                <Link href="/submit" className="hidden md:block">
                   <Button>クソゲーを登録</Button>
                 </Link>
                 <UserMenu />
               </>
             ) : (
               <>
-                <Link href="/auth/signin">
+                {/* デスクトップのみ表示 */}
+                <Link href="/auth/signin" className="hidden md:block">
                   <Button variant="ghost">ログイン</Button>
                 </Link>
-                <Link href="/auth/signup">
+                <Link href="/auth/signup" className="hidden md:block">
                   <Button>クソゲーを登録する</Button>
+                </Link>
+                {/* スマホのみ表示 */}
+                <Link href="/auth/signin" className="md:hidden">
+                  <Button variant="ghost" size="sm">ログイン</Button>
                 </Link>
               </>
             )}
