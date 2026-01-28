@@ -64,7 +64,6 @@ export default function LikeButton({ gameId, initialLikeCount, initialIsLiked }:
   return (
     <Button
       variant={isLiked ? "default" : "outline"}
-      size="sm"
       onClick={handleLike}
       disabled={loading}
       className="gap-2"
