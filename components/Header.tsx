@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import UserMenu from '@/components/UserMenu'
@@ -11,8 +12,14 @@ export default async function Header() {
     <header className="border-b bg-background sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            KUSOGET
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Image
+              src="/img/logo.svg"
+              alt="KUSOGET"
+              width={120}
+              height={40}
+              className="h-8 w-auto"
+            />
           </Link>
           <nav className="flex items-center gap-4">
             {user ? (
