@@ -34,6 +34,8 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
   const [signOutLoading, setSignOutLoading] = useState(false)
   const [themePreference, setThemePreference] = useState<'light' | 'dark' | 'system'>(initialThemePreference)
   const [themeLoading, setThemeLoading] = useState(false)
+  const [themeError, setThemeError] = useState<string | null>(null)
+  const [themeSuccess, setThemeSuccess] = useState<string | null>(null)
   const supabase = createClient()
 
   const {
@@ -140,8 +142,8 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
 
   const handleThemeChange = async (newTheme: 'light' | 'dark' | 'system') => {
     setThemeLoading(true)
-    setError(null)
-    setSuccess(null)
+    setThemeError(null)
+    setThemeSuccess(null)
 
     try {
       const { data: { user } } = await supabase.auth.getUser()
@@ -159,12 +161,12 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
         .eq('id', user.id)
 
       if (updateError) {
-        setError('テーマ設定の更新に失敗しました: ' + updateError.message)
+        setThemeError('テーマ設定の更新に失敗しました: ' + updateError.message)
         return
       }
 
       setThemePreference(newTheme)
-      setSuccess('テーマ設定を更新しました。ページをリロードしてください。')
+      setThemeSuccess('テーマ設定を更新しました。ページをリロードしてください。')
       
       // テーマを即座に反映
       if (typeof window !== 'undefined') {
@@ -180,7 +182,7 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
         localStorage.setItem('theme', newTheme)
       }
     } catch (err) {
-      setError('テーマ設定の更新に失敗しました')
+      setThemeError('テーマ設定の更新に失敗しました')
       console.error(err)
     } finally {
       setThemeLoading(false)
@@ -265,6 +267,16 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
               ]}
               disabled={themeLoading}
             />
+            {themeError && (
+              <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                {themeError}
+              </div>
+            )}
+            {themeSuccess && (
+              <div className="text-sm text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400 p-3 rounded-md">
+                {themeSuccess}
+              </div>
+            )}
             {themeLoading && (
               <p className="text-sm text-muted-foreground">更新中...</p>
             )}
