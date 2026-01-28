@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button"
 
 export interface RadioGroupProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  options: Array<{ value: string; label: string }>
+  options?: Array<{ value: string; label: string }>
   value?: string
   onValueChange?: (value: string) => void
   name?: string
+  disabled?: boolean
 }
 
 const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
-  ({ className, options, value, onValueChange, name, ...props }, ref) => {
+  ({ className, options = [], value, onValueChange, name, disabled, ...props }, ref) => {
     return (
       <div 
         ref={ref} 
@@ -24,7 +25,8 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
             type="button"
             variant={value === option.value ? "default" : "outline"}
             size="sm"
-            onClick={() => onValueChange?.(option.value)}
+            onClick={() => !disabled && onValueChange?.(option.value)}
+            disabled={disabled}
             className={cn(
               "transition-all",
               value === option.value && "bg-primary text-primary-foreground"

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertTriangle, Trash2, LogOut, Sun, Moon, Monitor } from 'lucide-react'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { RadioGroup } from '@/components/ui/radio-group'
 
 const profileSchema = z.object({
   username: z.string().min(2, 'ユーザー名は2文字以上で入力してください').max(30, 'ユーザー名は30文字以内で入力してください'),
@@ -254,37 +254,21 @@ export default function ProfileForm({ initialUsername, email, initialThemePrefer
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <RadioGroup
-            value={themePreference}
-            onValueChange={(value) => handleThemeChange(value as 'light' | 'dark' | 'system')}
-            disabled={themeLoading}
-            className="space-y-3"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="light" id="theme-light" />
-              <Label htmlFor="theme-light" className="flex items-center gap-2 cursor-pointer">
-                <Sun className="h-4 w-4" />
-                <span>ライトモード</span>
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="dark" id="theme-dark" />
-              <Label htmlFor="theme-dark" className="flex items-center gap-2 cursor-pointer">
-                <Moon className="h-4 w-4" />
-                <span>ダークモード</span>
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="system" id="theme-system" />
-              <Label htmlFor="theme-system" className="flex items-center gap-2 cursor-pointer">
-                <Monitor className="h-4 w-4" />
-                <span>システム設定に従う</span>
-              </Label>
-            </div>
-          </RadioGroup>
-          {themeLoading && (
-            <p className="text-sm text-muted-foreground mt-4">更新中...</p>
-          )}
+          <div className="space-y-4">
+            <RadioGroup
+              value={themePreference}
+              onValueChange={(value) => handleThemeChange(value as 'light' | 'dark' | 'system')}
+              options={[
+                { value: 'light', label: 'ライトモード' },
+                { value: 'dark', label: 'ダークモード' },
+                { value: 'system', label: 'システム設定に従う' },
+              ]}
+              disabled={themeLoading}
+            />
+            {themeLoading && (
+              <p className="text-sm text-muted-foreground">更新中...</p>
+            )}
+          </div>
         </CardContent>
       </Card>
 
