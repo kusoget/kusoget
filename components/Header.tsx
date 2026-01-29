@@ -45,9 +45,12 @@ export default async function Header() {
         </div>
       </header>
       {/* スクロールバナー */}
-      <div className="bg-primary text-primary-foreground overflow-hidden whitespace-nowrap sticky top-[73px] md:top-[81px] z-40">
-        <div className="animate-scroll inline-block">
-          <span className="inline-block px-4 text-xs md:text-sm font-medium">
+      <div className="bg-primary text-white dark:text-white overflow-hidden whitespace-nowrap sticky top-[73px] md:top-[81px] z-40">
+        <div className="flex animate-scroll">
+          <span className="inline-block px-4 text-xs md:text-sm font-medium flex-shrink-0">
+            みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩
+          </span>
+          <span className="inline-block px-4 text-xs md:text-sm font-medium flex-shrink-0">
             みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩
           </span>
         </div>
