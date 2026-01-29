@@ -1,6 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import ProfileForm from '@/components/ProfileForm'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'マイページ | KUSOGET',
+  description: 'プロフィール設定とアカウント管理。ユーザー名やアバター、テーマ設定を変更できます。',
+}
 
 export default async function ProfilePage() {
   const supabase = await createClient()

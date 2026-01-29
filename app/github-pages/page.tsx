@@ -2,6 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft, Github, Code, Settings, Rocket, CheckCircle2 } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'ゲームを無料で公開する方法 | KUSOGET',
+  description: 'GitHub Pagesを使って作ったゲームを無料で公開する方法を優しく解説します。誰でも無料で簡単にゲームを公開できます。',
+}
 
 export default function GitHubPagesGuidePage() {
   return (

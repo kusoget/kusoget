@@ -1,6 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import AdminDashboard from '@/components/AdminDashboard'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '管理画面 | KUSOGET',
+  description: 'KUSOGETの管理画面。投稿されたゲームの管理やユーザー管理ができます。',
+}
 
 export default async function AdminPage() {
   const supabase = await createClient()

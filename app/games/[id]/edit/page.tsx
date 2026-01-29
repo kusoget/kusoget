@@ -1,10 +1,31 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import EditGameForm from '@/components/EditGameForm'
+import type { Metadata } from 'next'
 
 interface EditPageProps {
   params: {
     id: string
+  }
+}
+
+export async function generateMetadata({ params }: EditPageProps): Promise<Metadata> {
+  const supabase = await createClient()
+  const { data: game } = await supabase
+    .from('games')
+    .select('title')
+    .eq('id', params.id)
+    .single()
+
+  if (!game) {
+    return {
+      title: 'ゲームを編集 | KUSOGET',
+    }
+  }
+
+  return {
+    title: `${game.title}を編集 | KUSOGET`,
+    description: `${game.title}の情報を編集します。`,
   }
 }
 

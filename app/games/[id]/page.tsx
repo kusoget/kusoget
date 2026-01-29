@@ -9,10 +9,31 @@ import EditButton from '@/components/EditButton'
 import PlayButton from '@/components/PlayButton'
 import CommentSection from '@/components/CommentSection'
 import { getGenreLabel } from '@/lib/genre-labels'
+import type { Metadata } from 'next'
 
 interface GameDetailPageProps {
   params: {
     id: string
+  }
+}
+
+export async function generateMetadata({ params }: GameDetailPageProps): Promise<Metadata> {
+  const supabase = await createClient()
+  const { data: game } = await supabase
+    .from('games')
+    .select('title, description')
+    .eq('id', params.id)
+    .single()
+
+  if (!game) {
+    return {
+      title: 'ゲームが見つかりません | KUSOGET',
+    }
+  }
+
+  return {
+    title: `${game.title} | KUSOGET`,
+    description: game.description || `${game.title} - AIで作られたクソゲーを楽しもう`,
   }
 }
 

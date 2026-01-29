@@ -2,6 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft, Gamepad2, Users, Heart, MessageSquare } from 'lucide-react'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'KUSOGETとは？ | KUSOGET',
+  description: 'KUSOGETは、AIで作られたクソゲーを気軽に投稿・共有できるプラットフォームです。面白いけど微妙なゲーム、変なゲーム、クソゲーを楽しみながら共有しましょう。',
+}
 
 export default function AboutPage() {
   return (

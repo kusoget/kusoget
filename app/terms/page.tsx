@@ -1,4 +1,10 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '利用規約 | KUSOGET',
+  description: 'KUSOGETの利用規約。サービスをご利用いただく際の条件を定めています。',
+}
 
 export default function TermsPage() {
   return (

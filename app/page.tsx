@@ -1,6 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import GameCard from '@/components/GameCard'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'ゲーム一覧 | KUSOGET',
+  description: 'AIで作られたクソゲーを共有する投稿型ポータルサイト。面白いけど微妙なゲーム、変なゲーム、クソゲーを楽しみながら共有しましょう。',
+}
 
 export default async function Home() {
   const supabase = await createClient()
