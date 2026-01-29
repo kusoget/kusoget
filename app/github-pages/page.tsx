@@ -57,7 +57,7 @@ export default function GitHubPagesGuidePage() {
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium text-foreground mb-1">GitHubアカウントを作成</p>
-                  <p className="text-sm">まだアカウントがない場合は、<a href="https://github.com/signup" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">GitHubの公式サイト</a>から無料で作成できます。</p>
+                  <p className="text-sm">まだアカウントがない場合は、<a href="https://github.com/signup" target="_blank" rel="noopener noreferrer" className="text-primary dark:text-purple-300 hover:underline">GitHubの公式サイト</a>から無料で作成できます。</p>
                 </div>
               </li>
               <li className="flex gap-3">
@@ -172,7 +172,7 @@ export default function GitHubPagesGuidePage() {
             </p>
             <div className="bg-secondary p-4 rounded-lg">
               <p className="text-sm font-medium mb-2">公開URLの形式:</p>
-              <p className="text-xs font-mono text-primary break-all">
+              <p className="text-xs font-mono text-primary dark:text-purple-300 break-all">
                 https://あなたのユーザー名.github.io/リポジトリ名/
               </p>
             </div>
@@ -226,19 +226,19 @@ export default function GitHubPagesGuidePage() {
           <CardContent>
             <ol className="space-y-2 text-muted-foreground">
               <li className="flex gap-2">
-                <span className="text-primary">1.</span>
+                <span className="text-primary dark:text-purple-300">1.</span>
                 <span>GitHubアカウントを作成してリポジトリを作る</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-primary">2.</span>
+                <span className="text-primary dark:text-purple-300">2.</span>
                 <span>ゲームのコードをアップロードする</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-primary">3.</span>
+                <span className="text-primary dark:text-purple-300">3.</span>
                 <span>Settings → Pages で公開設定をする</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-primary">4.</span>
+                <span className="text-primary dark:text-purple-300">4.</span>
                 <span>数分待って公開URLにアクセスする</span>
               </li>
             </ol>

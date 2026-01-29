@@ -54,7 +54,7 @@ export default function Footer() {
                 href="/github-pages" 
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                GitHub Pagesで公開
+                ゲームを無料で公開する方法
               </Link>
               <Link 
                 href="/terms" 
