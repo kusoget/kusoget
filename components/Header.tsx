@@ -9,8 +9,8 @@ export default async function Header() {
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <>
-      <header className="bg-background sticky top-0 z-50">
+    <div className="sticky top-0 z-[60]">
+      <header className="bg-background">
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
@@ -45,7 +45,7 @@ export default async function Header() {
         </div>
       </header>
       {/* スクロールバナー */}
-      <div className="bg-primary text-white overflow-hidden whitespace-nowrap sticky top-[65px] md:top-[73px] z-40 border-b">
+      <div className="bg-primary text-white overflow-hidden whitespace-nowrap border-b">
         <div className="flex animate-scroll">
           <span className="inline-block px-4 text-xs md:text-sm font-medium flex-shrink-0">
             みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩 みんなのクソゲーで遊ばせて💩
@@ -55,6 +55,6 @@ export default async function Header() {
           </span>
         </div>
       </div>
-    </>
+    </div>
   )
 }

@@ -208,13 +208,28 @@ export default function EditGameForm({ game }: EditGameFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="thumbnail">サムネイル画像</Label>
-            <Input
-              id="thumbnail"
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-            />
+            <div className="flex items-center gap-2">
+              <Input
+                id="thumbnail"
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                ファイルを選択
+              </Button>
+              {thumbnailFile && (
+                <span className="text-sm text-muted-foreground">
+                  選択中: {thumbnailFile.name}
+                </span>
+              )}
+            </div>
             {previewUrl && (
               <div className="mt-2">
                 <div className="relative w-full h-48 bg-muted rounded-md overflow-hidden">

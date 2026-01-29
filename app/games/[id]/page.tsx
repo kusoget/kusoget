@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: GameDetailPageProps): Promise
   const supabase = await createClient()
   const { data: game } = await supabase
     .from('games')
-    .select('title, description')
+    .select('title, description, thumbnail_url')
     .eq('id', params.id)
     .single()
 
@@ -31,10 +31,28 @@ export async function generateMetadata({ params }: GameDetailPageProps): Promise
     }
   }
 
-  return {
+  const metadata: Metadata = {
     title: `${game.title} | KUSOGET`,
     description: game.description || `${game.title} - AIで作られたクソゲーを楽しもう`,
+    openGraph: {
+      title: `${game.title} | KUSOGET`,
+      description: game.description || `${game.title} - AIで作られたクソゲーを楽しもう`,
+      type: 'website',
+    },
   }
+
+  if (game.thumbnail_url) {
+    metadata.openGraph!.images = [
+      {
+        url: game.thumbnail_url,
+        width: 1200,
+        height: 630,
+        alt: game.title,
+      },
+    ]
+  }
+
+  return metadata
 }
 
 export default async function GameDetailPage({ params }: GameDetailPageProps) {

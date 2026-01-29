@@ -69,7 +69,7 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
 
   return (
     <Card 
-      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
+      className="overflow-hidden hover:shadow-xl hover:scale-[1.02] hover:border-primary/50 transition-all duration-300 cursor-pointer relative"
       onClick={handleCardClick}
     >
       {isPending && (

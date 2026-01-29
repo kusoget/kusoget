@@ -211,23 +211,35 @@ export default function SubmitPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="thumbnail">サムネイル画像 *</Label>
-                <Input
-                  id="thumbnail"
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0]
-                    if (file) {
-                      setThumbnailFile(file)
-                    }
-                  }}
-                />
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Input
+                    id="thumbnail"
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        setThumbnailFile(file)
+                      }
+                    }}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    ファイルを選択
+                  </Button>
+                  {thumbnailFile && (
+                    <span className="text-sm text-muted-foreground">
+                      選択中: {thumbnailFile.name}
+                    </span>
+                  )}
+                </div>
                 {thumbnailFile && (
                   <div className="mt-2">
-                    <p className="text-sm text-muted-foreground mb-2">
-                      選択中: {thumbnailFile.name}
-                    </p>
                     <div className="relative w-full h-48 bg-muted rounded-md overflow-hidden">
                       <img
                         src={URL.createObjectURL(thumbnailFile)}
@@ -252,16 +264,17 @@ export default function SubmitPage() {
                 )}
               </div>
 
-              <div className="flex items-start space-x-2">
+              <div className="flex items-center space-x-2">
                 <Checkbox
                   id="agreeToTerms"
                   checked={agreeToTerms}
                   onCheckedChange={(checked) => setValue('agreeToTerms', checked === true)}
+                  className="mt-0"
                 />
                 <div className="space-y-1">
                   <Label
                     htmlFor="agreeToTerms"
-                    className="text-sm font-normal cursor-pointer"
+                    className="text-sm font-normal cursor-pointer leading-none"
                   >
                     私は{' '}
                     <Link href="/terms" className="text-primary hover:underline" target="_blank">

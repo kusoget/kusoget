@@ -125,16 +125,17 @@ export default function SignUpPage() {
               )}
             </div>
 
-            <div className="flex items-start space-x-2">
+            <div className="flex items-center space-x-2">
               <Checkbox
                 id="agreeToTerms"
                 checked={agreeToTerms}
                 onCheckedChange={(checked) => setValue('agreeToTerms', checked === true)}
+                className="mt-0"
               />
               <div className="space-y-1">
                 <Label
                   htmlFor="agreeToTerms"
-                  className="text-sm font-normal cursor-pointer"
+                  className="text-sm font-normal cursor-pointer leading-none"
                 >
                   私は{' '}
                   <Link href="/terms" className="text-primary hover:underline" target="_blank">
