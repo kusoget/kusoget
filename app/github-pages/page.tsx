@@ -264,7 +264,7 @@ export default function GitHubPagesGuidePage() {
                   <div className="ml-12">- run: npm run export</div>
                   <div className="ml-12">- uses: peaceiris/actions-gh-pages@v3</div>
                   <div className="ml-16">with:</div>
-                  <div className="ml-20">github_token: ${{'{'}} secrets.GITHUB_TOKEN {'}'}</div>
+                  <div className="ml-20">github_token: {'$'}{'{'}{'{'} secrets.GITHUB_TOKEN {'}'}{'}'}</div>
                   <div className="ml-20">publish_dir: ./out</div>
                 </div>
               </div>
