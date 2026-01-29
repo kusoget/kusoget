@@ -51,6 +51,12 @@ export default function Footer() {
                 KUSOGETとは？
               </Link>
               <Link 
+                href="/github-pages" 
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                GitHub Pagesで公開
+              </Link>
+              <Link 
                 href="/terms" 
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
