@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { ArrowLeft, Github, Code, Settings, Rocket, CheckCircle2, FileCode, Workflow } from 'lucide-react'
+import { ArrowLeft, Github, Code, Settings, Rocket, CheckCircle2 } from 'lucide-react'
 
 export default function GitHubPagesGuidePage() {
   return (
@@ -15,9 +15,9 @@ export default function GitHubPagesGuidePage() {
         </div>
 
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">GitHub Pagesでゲームを公開する方法</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">作ったゲームを無料で公開する方法</h1>
           <p className="text-lg text-muted-foreground">
-            Geminiで生成したゲームを、誰でも無料で公開できる手順を優しく解説します
+            誰でも無料で簡単にゲームを公開できる手順を優しく解説します
           </p>
         </div>
 
@@ -31,8 +31,8 @@ export default function GitHubPagesGuidePage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              GitHub Pagesは、GitHubが提供する無料のホスティングサービスです。
-              静的サイト（HTML、CSS、JavaScriptで作られたサイト）を無料で公開できます。
+              GitHub Pagesは、GitHubが提供する無料のサービスです。
+              作ったゲームを無料で公開できます。
             </p>
             <div className="bg-secondary p-4 rounded-lg">
               <p className="text-sm font-medium mb-2">✓ 無料で使える</p>
@@ -87,30 +87,30 @@ export default function GitHubPagesGuidePage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">
-              Geminiで生成したゲームのコードを、作成したリポジトリにアップロードします。
+              作ったゲームのファイルを、作成したリポジトリにアップロードします。
             </p>
             
-            <div className="space-y-4">
-              <div>
-                <p className="font-medium text-foreground mb-2">方法A: GitHubのWebサイトからアップロード</p>
-                <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground ml-4">
-                  <li>リポジトリのページで「uploading an existing file」をクリック</li>
-                  <li>ゲームのファイルをドラッグ&ドロップまたは選択</li>
-                  <li>「Commit changes」をクリック</li>
-                </ol>
-              </div>
-
-              <div className="border-t pt-4">
-                <p className="font-medium text-foreground mb-2">方法B: Gitコマンドを使う（上級者向け）</p>
-                <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono space-y-1">
-                  <div className="text-foreground"># ターミナルで実行</div>
-                  <div>git clone https://github.com/あなたのユーザー名/リポジトリ名.git</div>
-                  <div>cd リポジトリ名</div>
-                  <div># ゲームファイルをコピー</div>
-                  <div>git add .</div>
-                  <div>git commit -m &quot;初回コミット&quot;</div>
-                  <div>git push</div>
-                </div>
+            <div>
+              <p className="font-medium text-foreground mb-3">手順：</p>
+              <ol className="list-decimal list-inside space-y-3 text-sm text-muted-foreground ml-2">
+                <li>
+                  <span className="font-medium text-foreground">リポジトリのページを開く</span><br />
+                  作成したリポジトリのページで「uploading an existing file」というリンクをクリックします
+                </li>
+                <li>
+                  <span className="font-medium text-foreground">ファイルをアップロード</span><br />
+                  ゲームのファイル（HTML、CSS、JavaScriptなど）をドラッグ&ドロップするか、クリックして選択します
+                </li>
+                <li>
+                  <span className="font-medium text-foreground">保存する</span><br />
+                  ページの下にある「Commit changes」ボタンをクリックして保存します
+                </li>
+              </ol>
+              <div className="mt-4 p-3 bg-secondary rounded text-sm">
+                <p className="font-medium text-foreground mb-1">💡 ヒント</p>
+                <p className="text-xs text-muted-foreground">
+                  ゲームのメインファイル（index.htmlなど）が、リポジトリの一番上のフォルダにあるようにしてください。
+                </p>
               </div>
             </div>
           </CardContent>
@@ -131,25 +131,25 @@ export default function GitHubPagesGuidePage() {
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium text-foreground mb-1">リポジトリの設定ページを開く</p>
-                  <p className="text-sm">リポジトリのページで「Settings」タブをクリックします。</p>
+                  <p className="text-sm">リポジトリのページの上の方にある「Settings」というタブをクリックします。</p>
                 </div>
               </li>
               <li className="flex gap-3">
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium text-foreground mb-1">Pagesの設定を開く</p>
-                  <p className="text-sm">左側のメニューから「Pages」をクリックします。</p>
+                  <p className="text-sm">Settingsページの左側にあるメニューから「Pages」をクリックします。</p>
                 </div>
               </li>
               <li className="flex gap-3">
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-medium text-foreground mb-1">公開元を選択</p>
-                  <p className="text-sm mb-2">「Source」のドロップダウンから「Deploy from a branch」を選択します。</p>
+                  <p className="font-medium text-foreground mb-1">公開設定をする</p>
+                  <p className="text-sm mb-2">「Source」というところのドロップダウン（選択メニュー）から「Deploy from a branch」を選びます。</p>
                   <div className="mt-2 p-3 bg-secondary rounded text-xs">
-                    Branch: main（またはmaster）<br />
-                    Folder: /（ルート）<br />
-                    「Save」をクリック
+                    Branch: main を選ぶ<br />
+                    Folder: /（ルート）を選ぶ<br />
+                    最後に「Save」ボタンをクリック
                   </div>
                 </div>
               </li>
@@ -182,102 +182,6 @@ export default function GitHubPagesGuidePage() {
           </CardContent>
         </Card>
 
-        {/* Next.jsプロジェクトの場合 */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileCode className="h-5 w-5" />
-              Next.jsプロジェクトの場合（上級者向け）
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              Next.jsで作られたプロジェクトをGitHub Pagesで公開する場合は、静的エクスポートの設定が必要です。
-            </p>
-            
-            <div className="space-y-4">
-              <div>
-                <p className="font-medium text-foreground mb-2">1. next.config.jsを設定</p>
-                <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono">
-                  <div className="text-foreground">{'// next.config.js'}</div>
-                  <div>module.exports = {'{'}</div>
-                  <div className="ml-4">output: &apos;export&apos;,</div>
-                  <div className="ml-4">images: {'{'}</div>
-                  <div className="ml-8">unoptimized: true</div>
-                  <div className="ml-4">{'}'}</div>
-                  <div>{'}'}</div>
-                </div>
-              </div>
-
-              <div>
-                <p className="font-medium text-foreground mb-2">2. package.jsonにスクリプトを追加</p>
-                <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono">
-                  <div className="text-foreground">{'// package.json'}</div>
-                  <div>{'"scripts": {'}</div>
-                  <div className="ml-4">&quot;export&quot;: &quot;next build&quot;</div>
-                  <div>{'}'}</div>
-                </div>
-              </div>
-
-              <div>
-                <p className="font-medium text-foreground mb-2">3. ビルドしてアップロード</p>
-                <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono space-y-1">
-                  <div>npm run export</div>
-                  <div># outフォルダが作成される</div>
-                  <div># outフォルダの中身をGitHubにアップロード</div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* GitHub Actionsを使った自動デプロイ */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Workflow className="h-5 w-5" />
-              GitHub Actionsで自動デプロイ（便利な方法）
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              GitHub Actionsを使うと、コードをプッシュするだけで自動的にサイトが更新されます。
-            </p>
-            
-            <div className="space-y-4">
-              <div>
-                <p className="font-medium text-foreground mb-2">1. .github/workflows/deploy.ymlを作成</p>
-                <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono overflow-x-auto">
-                  <div className="text-foreground">name: Deploy to GitHub Pages</div>
-                  <div className="mt-1">on:</div>
-                  <div className="ml-4">push:</div>
-                  <div className="ml-8">branches: [ main ]</div>
-                  <div className="mt-1">jobs:</div>
-                  <div className="ml-4">build-and-deploy:</div>
-                  <div className="ml-8">runs-on: ubuntu-latest</div>
-                  <div className="ml-8">steps:</div>
-                  <div className="ml-12">- uses: actions/checkout@v3</div>
-                  <div className="ml-12">- uses: actions/setup-node@v3</div>
-                  <div className="ml-16">with:</div>
-                  <div className="ml-20">node-version: &apos;18&apos;</div>
-                  <div className="ml-12">- run: npm install</div>
-                  <div className="ml-12">- run: npm run export</div>
-                  <div className="ml-12">- uses: peaceiris/actions-gh-pages@v3</div>
-                  <div className="ml-16">with:</div>
-                  <div className="ml-20">github_token: {'$'}{'{'}{'{'} secrets.GITHUB_TOKEN {'}'}{'}'}</div>
-                  <div className="ml-20">publish_dir: ./out</div>
-                </div>
-              </div>
-
-              <div>
-                <p className="font-medium text-foreground mb-2">2. 設定を保存してプッシュ</p>
-                <p className="text-sm text-muted-foreground">
-                  このファイルをリポジトリに追加してプッシュすると、自動的にデプロイが開始されます。
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* よくある質問 */}
         <Card className="mb-6">
@@ -339,7 +243,7 @@ export default function GitHubPagesGuidePage() {
               </li>
             </ol>
             <p className="mt-4 text-sm text-muted-foreground">
-              これで、Geminiで生成したゲームを世界中の人に見てもらえるようになります！🎮
+              これで、作ったゲームを世界中の人に見てもらえるようになります！🎮
             </p>
           </CardContent>
         </Card>
