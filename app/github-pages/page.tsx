@@ -108,7 +108,7 @@ export default function GitHubPagesGuidePage() {
                   <div>cd リポジトリ名</div>
                   <div># ゲームファイルをコピー</div>
                   <div>git add .</div>
-                  <div>git commit -m "初回コミット"</div>
+                  <div>git commit -m &quot;初回コミット&quot;</div>
                   <div>git push</div>
                 </div>
               </div>
@@ -199,9 +199,9 @@ export default function GitHubPagesGuidePage() {
               <div>
                 <p className="font-medium text-foreground mb-2">1. next.config.jsを設定</p>
                 <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono">
-                  <div className="text-foreground">// next.config.js</div>
+                  <div className="text-foreground">{'// next.config.js'}</div>
                   <div>module.exports = {'{'}</div>
-                  <div className="ml-4">output: 'export',</div>
+                  <div className="ml-4">output: &apos;export&apos;,</div>
                   <div className="ml-4">images: {'{'}</div>
                   <div className="ml-8">unoptimized: true</div>
                   <div className="ml-4">{'}'}</div>
@@ -212,9 +212,9 @@ export default function GitHubPagesGuidePage() {
               <div>
                 <p className="font-medium text-foreground mb-2">2. package.jsonにスクリプトを追加</p>
                 <div className="mt-2 p-3 bg-secondary rounded text-xs font-mono">
-                  <div className="text-foreground">// package.json</div>
+                  <div className="text-foreground">{'// package.json'}</div>
                   <div>{'"scripts": {'}</div>
-                  <div className="ml-4">"export": "next build"</div>
+                  <div className="ml-4">&quot;export&quot;: &quot;next build&quot;</div>
                   <div>{'}'}</div>
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function GitHubPagesGuidePage() {
                   <div className="ml-12">- uses: actions/checkout@v3</div>
                   <div className="ml-12">- uses: actions/setup-node@v3</div>
                   <div className="ml-16">with:</div>
-                  <div className="ml-20">node-version: '18'</div>
+                  <div className="ml-20">node-version: &apos;18&apos;</div>
                   <div className="ml-12">- run: npm install</div>
                   <div className="ml-12">- run: npm run export</div>
                   <div className="ml-12">- uses: peaceiris/actions-gh-pages@v3</div>
