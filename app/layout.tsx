@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,12 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <body className={inter.className}>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7579337045676242"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <GoogleAnalytics />
         <ThemeProvider
           attribute="class"
