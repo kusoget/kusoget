@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     shortcut: '/favicon.png',
     apple: '/favicon.png',
   },
+  other: {
+    "google-adsense-account": "ca-pub-7579337045676242",
+  },
 };
 
 export default function RootLayout({
