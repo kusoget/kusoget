@@ -21,7 +21,8 @@ interface GameCardProps {
     game_url: string
     thumbnail_url: string
     type: 'playable' | 'log'
-    genre: 'action' | 'rpg' | 'puzzle' | 'simulation' | 'joke' | 'other'
+    genres?: string[]
+    genre?: string // 後方互換性のため
     platform: string[]
     view_count: number
     author_id: string
@@ -68,7 +69,7 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
   }
 
   return (
-    <Card 
+    <Card
       className="overflow-hidden hover:shadow-xl hover:scale-[1.02] hover:border-primary/50 transition-all duration-300 cursor-pointer relative"
       onClick={handleCardClick}
     >
@@ -99,9 +100,11 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="text-xs px-2 py-1 bg-secondary rounded-md">
-            {getGenreLabel(game.genre)}
-          </span>
+          {(game.genres || (game.genre ? [game.genre] : [])).map((g) => (
+            <span key={g} className="text-xs px-2 py-1 bg-secondary rounded-md">
+              {getGenreLabel(g)}
+            </span>
+          ))}
         </div>
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
           <span>
@@ -110,14 +113,14 @@ export default function GameCard({ game, canDelete, canEdit, likeCount, isLiked 
           <span>{game.view_count} プレイ</span>
         </div>
         <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-          <LikeButton 
+          <LikeButton
             gameId={game.id}
             initialLikeCount={likeCount}
             initialIsLiked={isLiked}
           />
-          <Link 
-            href={game.game_url} 
-            target="_blank" 
+          <Link
+            href={game.game_url}
+            target="_blank"
             rel="noopener noreferrer"
             onClick={handleGameClick}
             className="flex-1"

@@ -88,7 +88,7 @@ export default async function GameDetailPage({ params }: GameDetailPageProps) {
       .single()
     userProfile = profile
     canDelete = Boolean(profile && (
-      profile.id === game.author_id || 
+      profile.id === game.author_id ||
       profile.is_admin === true
     ))
     canEdit = Boolean(profile && profile.id === game.author_id)
@@ -97,13 +97,13 @@ export default async function GameDetailPage({ params }: GameDetailPageProps) {
   // いいね情報を取得
   let likeCount = 0
   let isLiked = false
-  
+
   try {
     const { data: likes } = await supabase
       .from('game_likes')
       .select('user_id')
       .eq('game_id', params.id)
-    
+
     if (likes) {
       likeCount = likes.length
       if (user) {
@@ -153,12 +153,14 @@ export default async function GameDetailPage({ params }: GameDetailPageProps) {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2 mb-4">
-              <span className="text-sm px-3 py-1 bg-secondary rounded-md">
-                {getGenreLabel(game.genre)}
-              </span>
+              {(game.genres || (game.genre ? [game.genre] : [])).map((g: string) => (
+                <span key={g} className="text-sm px-3 py-1 bg-secondary rounded-md">
+                  {getGenreLabel(g)}
+                </span>
+              ))}
             </div>
             <div className="flex gap-4 mb-6">
-              <LikeButton 
+              <LikeButton
                 gameId={game.id}
                 initialLikeCount={likeCount}
                 initialIsLiked={isLiked}

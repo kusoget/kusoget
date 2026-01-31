@@ -10,33 +10,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Select } from '@/components/ui/select'
-import { RadioGroup } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
 import Link from 'next/link'
+import { GENRE_OPTIONS } from '@/lib/genre-labels'
 
 const submitSchema = z.object({
   title: z.string().min(1, 'タイトルを入力してください'),
   game_url: z.string().url('有効なURLを入力してください'),
-  genre: z.enum([
-    'action', 
-    'rpg', 
-    'puzzle', 
-    'simulation', 
-    'joke', 
-    'platformer',
-    'shooter',
-    'racing',
-    'strategy',
-    'horror',
-    'adventure',
-    'music',
-    'sports',
-    'fighting',
-    'other'
-  ], {
-    required_error: 'ジャンルを選択してください',
-  }),
+  genres: z.array(z.string()).min(1, 'ジャンルを1つ以上選択してください'),
   agreeToTerms: z.boolean().refine((val) => val === true, {
     message: '利用規約への同意が必要です',
   }),
@@ -62,29 +43,21 @@ export default function SubmitPage() {
     resolver: zodResolver(submitSchema),
     defaultValues: {
       agreeToTerms: false,
+      genres: [],
     },
   })
 
   const agreeToTerms = watch('agreeToTerms')
-  const genre = watch('genre')
+  const selectedGenres = watch('genres')
 
-  const genreOptions = [
-    { value: 'action', label: 'アクション' },
-    { value: 'rpg', label: 'RPG' },
-    { value: 'puzzle', label: 'パズル' },
-    { value: 'simulation', label: 'シミュレーション' },
-    { value: 'joke', label: 'ジョーク' },
-    { value: 'platformer', label: 'プラットフォーマー' },
-    { value: 'shooter', label: 'シューティング' },
-    { value: 'racing', label: 'レーシング' },
-    { value: 'strategy', label: 'ストラテジー' },
-    { value: 'horror', label: 'ホラー' },
-    { value: 'adventure', label: 'アドベンチャー' },
-    { value: 'music', label: '音楽' },
-    { value: 'sports', label: 'スポーツ' },
-    { value: 'fighting', label: '格闘' },
-    { value: 'other', label: 'その他' },
-  ]
+  const toggleGenre = (genreValue: string) => {
+    const current = selectedGenres || []
+    if (current.includes(genreValue)) {
+      setValue('genres', current.filter(g => g !== genreValue))
+    } else {
+      setValue('genres', [...current, genreValue])
+    }
+  }
 
   const onSubmit = async (data: SubmitForm) => {
     setError(null)
@@ -150,16 +123,16 @@ export default function SubmitPage() {
           thumbnail_url: thumbnailUrl,
           author_id: profile.id,
           type: 'playable', // デフォルト値として'playable'を設定
-          genre: data.genre,
+          genres: data.genres,
           platform: [], // プラットフォームは空配列を設定
         })
 
-        if (insertError) {
-          setError('投稿に失敗しました。しばらく待ってから再度お試しください。')
-          console.error('Insert error:', insertError)
-          setLoading(false)
-          return
-        }
+      if (insertError) {
+        setError('投稿に失敗しました。しばらく待ってから再度お試しください。')
+        console.error('Insert error:', insertError)
+        setLoading(false)
+        return
+      }
 
       router.push('/')
       router.refresh()
@@ -252,15 +225,34 @@ export default function SubmitPage() {
               </div>
 
               <div className="space-y-2">
-                <Label>ジャンル *</Label>
-                <RadioGroup
-                  name="genre"
-                  options={genreOptions}
-                  value={genre}
-                  onValueChange={(value) => setValue('genre', value as any)}
-                />
-                {errors.genre && (
-                  <p className="text-sm text-destructive">{errors.genre.message}</p>
+                <Label>ジャンル * （複数選択可）</Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {GENRE_OPTIONS.map((option) => (
+                    <div
+                      key={option.value}
+                      className={`flex items-center gap-2 p-2 rounded-md border cursor-pointer transition-colors ${selectedGenres?.includes(option.value)
+                          ? 'bg-primary/10 border-primary'
+                          : 'hover:bg-muted'
+                        }`}
+                      onClick={() => toggleGenre(option.value)}
+                    >
+                      <Checkbox
+                        id={`genre-${option.value}`}
+                        checked={selectedGenres?.includes(option.value) || false}
+                        onCheckedChange={() => toggleGenre(option.value)}
+                        className="pointer-events-none"
+                      />
+                      <Label
+                        htmlFor={`genre-${option.value}`}
+                        className="text-sm cursor-pointer flex-1"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+                {errors.genres && (
+                  <p className="text-sm text-destructive">{errors.genres.message}</p>
                 )}
               </div>
 

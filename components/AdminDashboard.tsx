@@ -17,7 +17,8 @@ interface Game {
   game_url: string
   thumbnail_url: string
   type: 'playable' | 'log'
-  genre: string
+  genres?: string[]
+  genre?: string // 後方互換性のため
   platform: string[]
   view_count: number
   created_at: string
@@ -175,9 +176,11 @@ export default function AdminDashboard() {
                           {game.title}
                         </h3>
                         <div className="flex flex-wrap gap-2 mb-2">
-                          <span className="text-xs px-2 py-1 bg-secondary rounded-md">
-                            {getGenreLabel(game.genre)}
-                          </span>
+                          {(game.genres || (game.genre ? [game.genre] : [])).map((g: string) => (
+                            <span key={g} className="text-xs px-2 py-1 bg-secondary rounded-md">
+                              {getGenreLabel(g)}
+                            </span>
+                          ))}
                         </div>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span>
@@ -201,8 +204,8 @@ export default function AdminDashboard() {
                             確認
                           </Button>
                         </a>
-                        <DeleteButton 
-                          gameId={game.id} 
+                        <DeleteButton
+                          gameId={game.id}
                           onDelete={fetchGames}
                         />
                       </div>

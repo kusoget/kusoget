@@ -10,32 +10,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { RadioGroup } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
 import Link from 'next/link'
+import { GENRE_OPTIONS } from '@/lib/genre-labels'
 
 const editSchema = z.object({
   title: z.string().min(1, 'タイトルを入力してください'),
   game_url: z.string().url('有効なURLを入力してください'),
-  genre: z.enum([
-    'action', 
-    'rpg', 
-    'puzzle', 
-    'simulation', 
-    'joke', 
-    'platformer',
-    'shooter',
-    'racing',
-    'strategy',
-    'horror',
-    'adventure',
-    'music',
-    'sports',
-    'fighting',
-    'other'
-  ], {
-    required_error: 'ジャンルを選択してください',
-  }),
+  genres: z.array(z.string()).min(1, 'ジャンルを1つ以上選択してください'),
 })
 
 type EditForm = z.infer<typeof editSchema>
@@ -46,7 +28,8 @@ interface EditGameFormProps {
     title: string
     game_url: string
     thumbnail_url: string
-    genre: string
+    genres?: string[]
+    genre?: string // 後方互換性のため
   }
 }
 
@@ -60,6 +43,9 @@ export default function EditGameForm({ game }: EditGameFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
 
+  // 初期値: genresがあればそれを使用、なければgenreを配列に変換
+  const initialGenres = game.genres || (game.genre ? [game.genre] : [])
+
   const {
     register,
     handleSubmit,
@@ -71,29 +57,20 @@ export default function EditGameForm({ game }: EditGameFormProps) {
     defaultValues: {
       title: game.title,
       game_url: game.game_url,
-      genre: game.genre as any,
+      genres: initialGenres,
     },
   })
 
-  const genre = watch('genre')
+  const selectedGenres = watch('genres')
 
-  const genreOptions = [
-    { value: 'action', label: 'アクション' },
-    { value: 'rpg', label: 'RPG' },
-    { value: 'puzzle', label: 'パズル' },
-    { value: 'simulation', label: 'シミュレーション' },
-    { value: 'joke', label: 'ジョーク' },
-    { value: 'platformer', label: 'プラットフォーマー' },
-    { value: 'shooter', label: 'シューティング' },
-    { value: 'racing', label: 'レーシング' },
-    { value: 'strategy', label: 'ストラテジー' },
-    { value: 'horror', label: 'ホラー' },
-    { value: 'adventure', label: 'アドベンチャー' },
-    { value: 'music', label: '音楽' },
-    { value: 'sports', label: 'スポーツ' },
-    { value: 'fighting', label: '格闘' },
-    { value: 'other', label: 'その他' },
-  ]
+  const toggleGenre = (genreValue: string) => {
+    const current = selectedGenres || []
+    if (current.includes(genreValue)) {
+      setValue('genres', current.filter(g => g !== genreValue))
+    } else {
+      setValue('genres', [...current, genreValue])
+    }
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -147,7 +124,7 @@ export default function EditGameForm({ game }: EditGameFormProps) {
           title: data.title,
           game_url: data.game_url,
           thumbnail_url: thumbnailUrl,
-          genre: data.genre,
+          genres: data.genres,
         })
         .eq('id', game.id)
 
@@ -244,15 +221,34 @@ export default function EditGameForm({ game }: EditGameFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>ジャンル *</Label>
-            <RadioGroup
-              name="genre"
-              options={genreOptions}
-              value={genre}
-              onValueChange={(value) => setValue('genre', value as any)}
-            />
-            {errors.genre && (
-              <p className="text-sm text-destructive">{errors.genre.message}</p>
+            <Label>ジャンル * （複数選択可）</Label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {GENRE_OPTIONS.map((option) => (
+                <div
+                  key={option.value}
+                  className={`flex items-center gap-2 p-2 rounded-md border cursor-pointer transition-colors ${selectedGenres?.includes(option.value)
+                      ? 'bg-primary/10 border-primary'
+                      : 'hover:bg-muted'
+                    }`}
+                  onClick={() => toggleGenre(option.value)}
+                >
+                  <Checkbox
+                    id={`edit-genre-${option.value}`}
+                    checked={selectedGenres?.includes(option.value) || false}
+                    onCheckedChange={() => toggleGenre(option.value)}
+                    className="pointer-events-none"
+                  />
+                  <Label
+                    htmlFor={`edit-genre-${option.value}`}
+                    className="text-sm cursor-pointer flex-1"
+                  >
+                    {option.label}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            {errors.genres && (
+              <p className="text-sm text-destructive">{errors.genres.message}</p>
             )}
           </div>
 
