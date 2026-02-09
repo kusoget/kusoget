@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const supabase = await createClient()
-  
+
   const { data: { user } } = await supabase.auth.getUser()
 
   // まずゲームを取得（game_likesテーブルが存在しない場合でも動作するように）
@@ -24,12 +24,12 @@ export default async function Home() {
       )
     `)
     .order('created_at', { ascending: false })
-    .limit(20)
+    .limit(50)
 
   // いいね情報を取得（テーブルが存在する場合のみ）
   let gameLikesMap: Record<string, number> = {}
   let userLikedGames: string[] = []
-  
+
   try {
     // 各ゲームのいいね数を取得
     if (games && games.length > 0) {
@@ -38,13 +38,13 @@ export default async function Home() {
         .from('game_likes')
         .select('game_id, user_id')
         .in('game_id', gameIds)
-      
+
       if (likes) {
         // いいね数をカウント
         likes.forEach(like => {
           gameLikesMap[like.game_id] = (gameLikesMap[like.game_id] || 0) + 1
         })
-        
+
         // ユーザーがいいねしたゲームを取得
         if (user) {
           userLikedGames = likes
@@ -57,7 +57,7 @@ export default async function Home() {
     // game_likesテーブルが存在しない場合は無視
     console.log('game_likes table may not exist yet:', err)
   }
-  
+
   let userProfile = null
   if (user) {
     const { data } = await supabase
@@ -79,7 +79,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {games.map((game) => {
               const canDelete = Boolean(userProfile && (
-                userProfile.id === game.author_id || 
+                userProfile.id === game.author_id ||
                 userProfile.is_admin === true
               ))
               const canEdit = Boolean(userProfile && userProfile.id === game.author_id)
@@ -89,8 +89,8 @@ export default async function Home() {
               const isLiked = userLikedGames.includes(game.id)
 
               return (
-                <GameCard 
-                  key={game.id} 
+                <GameCard
+                  key={game.id}
                   game={{
                     ...game,
                     profiles: game.profiles as { id: string; username: string | null } | null
